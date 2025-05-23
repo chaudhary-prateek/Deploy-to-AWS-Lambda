@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
-    environment {
-        AWS_ACCESS_KEY_ID = 'AKIAULGG7YHP3KIGE2NG'
-        AWS_SECRET_ACCESS_KEY = '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'
+    environment {        
+        AWS_ACCESS_KEY_ID = credentials('aws-access-key')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
         AWS_REGION = 'ap-south-1'
         AWS_ACCOUNT_ID = '298917544415'
         ECR_REPO = 'node'
