@@ -5,9 +5,11 @@ pipeline {
         AWS_ACCESS_KEY_ID = 'aws-access-key'
         AWS_SECRET_ACCESS_KEY = 'aws-secret-key'
         AWS_REGION = 'ap-south-1'
+        AWS_ACCOUNT_ID = '298917544415'
         ECR_REPO = 'node'
         IMAGE_TAG = "latest"
         LAMBDA_FUNCTION_NAME = 'node'
+        ECR_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}"
     }
 
     stages {
