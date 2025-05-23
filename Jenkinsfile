@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        AWS_ACCESS_KEY_ID = credentials('aws-access-key')
-        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
+        AWS_ACCESS_KEY_ID = 'aws-access-key'
+        AWS_SECRET_ACCESS_KEY = 'aws-secret-key'
         AWS_REGION = 'ap-south-1'
         ECR_REPO = 'node'
         IMAGE_TAG = "latest"
@@ -20,7 +20,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-                    docker build -t ("${ECR_REPO}:${IMAGE_TAG}") .
+                    docker.build("${ECR_REPO}:${IMAGE_TAG}")
                 }
             }
         }
