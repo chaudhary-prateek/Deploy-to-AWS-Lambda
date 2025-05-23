@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git url: 'https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda.git'
+                git branch: 'main', url: 'https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda.git'
             }
         }
 
