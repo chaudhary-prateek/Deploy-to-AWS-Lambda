@@ -41,13 +41,13 @@ pipeline {
         withAWS(credentials: 'awsid', region: "${AWS_REGION}") {
           sh """
             echo "🔐 Logging into ECR..."
-            aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${IMAGE_URI}
+            aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 298917544415.dkr.ecr.ap-south-1.amazonaws.com
 
             echo "📤 Pushing Docker image: ${IMAGE_URI}:${params.TAG}"
-            docker push ${IMAGE_URI}:${params.TAG}
+            docker tag node:latest 298917544415.dkr.ecr.ap-south-1.amazonaws.com/node:latest
 
             echo "📤 Pushing Docker image: ${IMAGE_URI}:latest"
-            docker push ${IMAGE_URI}:latest
+            docker push 298917544415.dkr.ecr.ap-south-1.amazonaws.com/node:latest
           """
         }
       }
