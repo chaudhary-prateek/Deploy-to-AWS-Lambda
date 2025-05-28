@@ -89,7 +89,6 @@ pipeline {
   }
 }
 */
-
 pipeline {
   agent any
 
@@ -109,14 +108,9 @@ pipeline {
   stages {
     stage('Inject AWS Credentials') {
       steps {
-        withCredentials([[$class: 'UsernamePasswordMultiBinding',
-                          credentialsId: 'AWS-ID',
-                          usernameVariable: 'CREDS_ACCESS_KEY',
-                          passwordVariable: 'CREDS_SECRET_KEY']]) {
+        withCredentials([usernamePassword(credentialsId: 'AWS-ID', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
           script {
-            // Export credentials for all following sh steps
-            env.AWS_ACCESS_KEY_ID = "${env.CREDS_ACCESS_KEY}"
-            env.AWS_SECRET_ACCESS_KEY = "${env.CREDS_SECRET_KEY}"
+            // Credentials automatically set in env variables, no need to export manually here
           }
         }
       }
@@ -146,23 +140,21 @@ pipeline {
           docker build -t ${IMAGE_URI}:${params.TAG} .
           echo "🖼️ List local Docker images:"
           docker images | grep ${ECR_REPO}
-          
         """
       }
     }
 
     stage('Authenticate & Push Docker Image') {
       steps {
-        sh """
-          echo "🔐 Logging into ECR..."
-          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+        withCredentials([usernamePassword(credentialsId: 'AWS-ID', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+          sh """
+            echo "🔐 Logging into ECR..."
+            aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
 
-          echo "📤 Pushing Docker image: ${IMAGE_URI}:${params.TAG}"
-          docker push 298917544415.dkr.ecr.ap-south-1.amazonaws.com/node:${params.TAG}
-
-          echo "📤 Pushing Docker image: ${IMAGE_URI}:latest"
-          
-        """
+            echo "📤 Pushing Docker image: ${IMAGE_URI}:${params.TAG}"
+            docker push ${IMAGE_URI}:${params.TAG}
+          """
+        }
       }
     }
 
