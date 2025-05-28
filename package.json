@@ -4,7 +4,16 @@
   "description": "Node.js Lambda app in a Docker container",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "prepare": "husky install"
   },
-  "dependencies": {}
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.3",
+    "husky": "^8.0.0",
+    "semantic-release": "^24.2.5"
+  }
 }
