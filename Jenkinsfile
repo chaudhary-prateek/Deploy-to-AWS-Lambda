@@ -29,7 +29,7 @@ pipeline {
     stage('Authenticate AWS') {
       steps {
         withCredentials([[$class: 'UsernamePasswordMultiBinding',
-                          credentialsId: 'AWSID',
+                          credentialsId: 'awsid',
                           usernameVariable: 'AWS_ACCESS_KEY_ID',
                           passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
           sh '''
