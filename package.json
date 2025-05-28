@@ -1,0 +1,10 @@
+{
+  "name": "node-lambda-docker",
+  "version": "1.0.0",
+  "description": "Node.js Lambda app in a Docker container",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {}
+}
