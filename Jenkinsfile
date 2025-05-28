@@ -163,7 +163,7 @@ pipeline {
            aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 298917544415.dkr.ecr.ap-south-1.amazonaws.com
 
            echo "📤 Pushing Docker image: ${IMAGE_URI}:${params.TAG}"
-           docker push ${IMAGE_URI}:${params.TAG}
+           docker push 298917544415.dkr.ecr.ap-south-1.amazonaws.com/node:v1.0.0
         """
         }
       }
