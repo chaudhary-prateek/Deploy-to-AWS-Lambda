@@ -25,7 +25,7 @@ pipeline {
         """
       }
     }
-
+/*
     stage('Build Docker Image') {
       steps {
         sh """
@@ -35,7 +35,7 @@ pipeline {
         """
       }
     }
-
+*/
     stage('Authenticate & Push Docker Image') {
       steps {
         withAWS(credentials: 'awsid', region: "${AWS_REGION}") {
