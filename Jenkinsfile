@@ -34,16 +34,15 @@ pipeline {
         }
       }
     }
-    stage('Set AWS Credentials') {
-        steps {
-        withCredentials([usernamePassword(credentialsId: 'awsid', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
-            sh """
-            export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-            export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-            aws sts get-caller-identity
-            """
+    stage('AWS Authentication') {
+      steps {
+        script {
+          withAWS(credentials: 'awsid', region: "${AWS_REGION}") {
+            echo "✅ AWS credentials loaded"
+            sh "aws sts get-caller-identity"
+          }
         }
-        }
+      }
     }
 
     stage('Authenticate with AWS ECR') {
