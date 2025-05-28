@@ -19,6 +19,7 @@ pipeline {
       steps {
         git branch: "${params.BRANCH}", url: 'https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda.git'
         sh """
+          echo "📥 Fetching tags and checking out tag: ${params.TAG}"
           git fetch --tags
           git checkout tags/${params.TAG}
         """
@@ -28,6 +29,7 @@ pipeline {
     stage('Build Docker Image') {
       steps {
         sh """
+          echo "🐳 Building Docker image: ${IMAGE_URI}:${params.TAG}"
           docker build -t ${IMAGE_URI}:${params.TAG} .
           docker tag ${IMAGE_URI}:${params.TAG} ${IMAGE_URI}:latest
         """
@@ -37,7 +39,7 @@ pipeline {
     stage('Authenticate & Push Docker Image') {
       steps {
         withAWS(credentials: 'awsid', region: "${AWS_REGION}") {
-         sh """
+          sh """
             echo "🔐 Logging into ECR..."
             aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${IMAGE_URI}
 
@@ -46,7 +48,7 @@ pipeline {
 
             echo "📤 Pushing Docker image: ${IMAGE_URI}:latest"
             docker push ${IMAGE_URI}:latest
-         """
+          """
         }
       }
     }
@@ -55,6 +57,7 @@ pipeline {
       steps {
         withAWS(credentials: 'awsid', region: "${AWS_REGION}") {
           sh """
+            echo "🚀 Deploying to Lambda function: ${LAMBDA_FUNCTION_NAME}"
             aws lambda update-function-code \
               --function-name ${LAMBDA_FUNCTION_NAME} \
               --image-uri ${IMAGE_URI}:${params.TAG} \
