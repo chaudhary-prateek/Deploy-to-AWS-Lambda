@@ -144,7 +144,7 @@ pipeline {
         sh """
           echo "🐳 Building Docker image: ${IMAGE_URI}:${params.TAG}"
           docker build -t ${IMAGE_URI}:${params.TAG} .
-          docker tag ${IMAGE_URI}:${params.TAG} 
+          
         """
       }
     }
