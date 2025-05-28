@@ -146,6 +146,7 @@ pipeline {
           docker build -t ${IMAGE_URI}:${params.TAG} .
           echo "🖼️ List local Docker images:"
           docker images | grep ${ECR_REPO}
+          docker tag ${IMAGE_URI}:${params.TAG}
           
         """
       }
