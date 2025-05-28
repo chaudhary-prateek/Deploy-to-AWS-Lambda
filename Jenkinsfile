@@ -143,7 +143,6 @@ pipeline {
       steps {
         sh """
           echo "🐳 Building Docker image: ${IMAGE_URI}:${params.TAG}"
-          docker rmi -f $(docker images -q)
           docker build -t ${IMAGE_URI}:${params.TAG} .
           echo "🖼️ List local Docker images:"
           docker images | grep ${ECR_REPO}
