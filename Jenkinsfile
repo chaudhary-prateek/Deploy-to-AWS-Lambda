@@ -29,7 +29,8 @@ pipeline {
       steps {
         script {
           sh """
-            docker build -t ${IMAGE_URI}:${params.TAG} .
+            docker build -t ${IMAGE_URI}:${params.TAG} . | \
+            docker tag node:latest 298917544415.dkr.ecr.ap-south-1.amazonaws.com/node:latest
           """
         }
       }
@@ -51,6 +52,7 @@ pipeline {
         script {
           sh """
             aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 298917544415.dkr.ecr.ap-south-1.amazonaws.com | \
+            docker push 298917544415.dkr.ecr.ap-south-1.amazonaws.com/node:latest | \
               docker login --username AWS --password-stdin ${IMAGE_URI}
           """
         }
