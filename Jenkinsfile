@@ -25,6 +25,19 @@ pipeline {
         """
       }
     }
+
+    stage('Authenticate AWS') {
+      steps {
+        withCredentials([[$class: 'UsernamePasswordMultiBinding',
+                          credentialsId: 'AWS-ID',
+                          usernameVariable: 'AWS_ACCESS_KEY_ID',
+                          passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+          sh '''
+            aws sts get-caller-identity --region $AWS_REGION
+          '''
+        }
+      }
+    }
 /*
     stage('Build Docker Image') {
       steps {
