@@ -156,7 +156,7 @@ pipeline {
       steps {
         withCredentials([[
           $class: 'AmazonWebServicesCredentialsBinding',
-         credentialsId: 'AWS-ID'
+         credentialsId: 'awsid'
         ]]) {
          sh """
            echo "🔐 Logging into ECR..."
