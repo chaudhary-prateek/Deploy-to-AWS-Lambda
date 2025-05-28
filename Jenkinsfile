@@ -51,7 +51,10 @@ pipeline {
 */
     stage('Authenticate & Push Docker Image') {
       steps {
-        withAWS(credentials: 'awsid', region: "${AWS_REGION}") {
+        withCredentials([[$class: 'UsernamePasswordMultiBinding',
+                          credentialsId: 'AWS-ID',
+                          usernameVariable: 'AWS_ACCESS_KEY_ID',
+                          passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
           sh """
             echo "🔐 Logging into ECR..."
             aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 298917544415.dkr.ecr.ap-south-1.amazonaws.com
