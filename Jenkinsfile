@@ -71,7 +71,10 @@ pipeline {
 
     stage('Deploy to Lambda') {
       steps {
-        withAWS(credentials: 'awsid', region: "${AWS_REGION}") {
+        withCredentials([[$class: 'UsernamePasswordMultiBinding',
+                          credentialsId: 'AWS-ID',
+                          usernameVariable: 'AWS_ACCESS_KEY_ID',
+                          passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
           sh """
             echo "🚀 Deploying to Lambda function: ${LAMBDA_FUNCTION_NAME}"
             aws lambda update-function-code \
