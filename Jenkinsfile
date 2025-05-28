@@ -89,6 +89,7 @@ pipeline {
   }
 }
 */
+
 pipeline {
   agent any
 
@@ -109,9 +110,7 @@ pipeline {
     stage('Inject AWS Credentials') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'AWS-ID', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
-          script {
-            // Credentials automatically set in env variables, no need to export manually here
-          }
+          sh 'echo "AWS credentials injected"'
         }
       }
     }
@@ -146,10 +145,13 @@ pipeline {
 
     stage('Authenticate & Push Docker Image') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'AWS-ID', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+        withCredentials([[
+          $class: 'AmazonWebServicesCredentialsBinding',
+          credentialsId: 'AWS-ID'
+        ]]) {
           sh """
             echo "🔐 Logging into ECR..."
-            aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+            aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
 
             echo "📤 Pushing Docker image: ${IMAGE_URI}:${params.TAG}"
             docker push ${IMAGE_URI}:${params.TAG}
