@@ -164,7 +164,7 @@ pipeline {
 
           echo "📤 Pushing Docker image: ${IMAGE_URI}:latest"
           docker push ${IMAGE_URI}:latest
-        """
+        """}
       }
     }
 
