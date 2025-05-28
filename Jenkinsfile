@@ -144,17 +144,13 @@ pipeline {
         sh """
           echo "🐳 Building Docker image: ${IMAGE_URI}:${params.TAG}"
           docker build -t ${IMAGE_URI}:${params.TAG} .
-          docker tag ${IMAGE_URI}:${params.TAG} ${IMAGE_URI}:latest
+          docker tag ${IMAGE_URI}:${params.TAG} 
         """
       }
     }
 
     stage('Authenticate & Push Docker Image') {
       steps {
-        withCredentials([[$class: 'UsernamePasswordMultiBinding',
-                          credentialsId: 'AWS-ID',
-                          usernameVariable: 'CREDS_ACCESS_KEY',
-                          passwordVariable: 'CREDS_SECRET_KEY']]) {
         sh """
           echo "🔐 Logging into ECR..."
           aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
@@ -163,8 +159,8 @@ pipeline {
           docker push ${IMAGE_URI}:${params.TAG}
 
           echo "📤 Pushing Docker image: ${IMAGE_URI}:latest"
-          docker push ${IMAGE_URI}:latest
-        """}
+          
+        """
       }
     }
 
