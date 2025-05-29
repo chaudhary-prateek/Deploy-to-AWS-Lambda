@@ -14,12 +14,16 @@ pipeline {
       name: 'BRANCH',
       type: 'PT_BRANCH',
       defaultValue: 'main',
-      branchFilter: '.*',
+      description: 'Select a Git branch',
       useRepository: 'https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda.git',
-      sortMode: 'DESCENDING'
+      branchFilter: 'origin/(.*)',         // Only show remote branches
+      sortMode: 'DESCENDING',
+      selectedValue: 'DEFAULT',
+      quickFilterEnabled: true,
+      stripOrigin: true                    // ✅ Removes "origin/" prefix
     )
-    string(name: 'TAG', defaultValue: '', description: 'Tag to deploy (populated dynamically via Active Choices)')
   }
+
 
   stages {
     stage('Checkout Code') {
