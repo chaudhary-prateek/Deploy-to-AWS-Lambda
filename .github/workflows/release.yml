@@ -10,8 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout code with full history
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 👈 Fetch entire history to allow semantic-release to find the correct base
 
       - name: Use Node.js 20
         uses: actions/setup-node@v4
