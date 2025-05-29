@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda/compare/v1.0.1...v1.1.0) (2025-05-29)
+
+
+### Features
+
+* add test file for release testing ([7159981](https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda/commit/71599810b37797cca9e2558804d380d121df02ae))
+
 ## [1.0.1](https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda/compare/v1.0.0...v1.0.1) (2025-05-29)
 
 
