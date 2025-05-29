@@ -1,3 +1,11 @@
+## [1.1.1](https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda/compare/v1.1.0...v1.1.1) (2025-05-29)
+
+
+### Bug Fixes
+
+* deploy on DEV ([45dde38](https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda/commit/45dde387a7dcd61fc43417ca711c65b80a032405))
+* deploy on DEV ([9ae09db](https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda/commit/9ae09db2f02453096fc8d48058e06b904a27874b))
+
 # [1.1.0](https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda/compare/v1.0.1...v1.1.0) (2025-05-29)
 
 
