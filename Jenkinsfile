@@ -102,8 +102,25 @@ pipeline {
   }
 
   parameters {
-    string(name: 'BRANCH', defaultValue: 'main', description: 'Git branch to use')
-    string(name: 'TAG', defaultValue: 'v1.0.0', description: 'Git tag to deploy')
+    gitParameter(
+      name: 'BRANCH',
+      type: 'BRANCH',
+      defaultValue: 'main',
+      description: 'Git branch to use',
+      branchFilter: '.*',
+      useRepository: 'https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda.git',
+      sortMode: 'DESCENDING'
+    )
+    
+    gitParameter(
+      name: 'TAG',
+      type: 'TAG',
+      defaultValue: 'v1.0.0',
+      description: 'Git tag to deploy',
+      tagFilter: '*',
+      useRepository: 'https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda.git',
+      sortMode: 'DESCENDING'
+    )
   }
 
   stages {
