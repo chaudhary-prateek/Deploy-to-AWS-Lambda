@@ -117,7 +117,7 @@ pipeline {
                 name: 'tag',
                 type: 'PT_TAG',
                 tagFilter: '.*dev.*',
-                defaultValue: 'v1.0.0-dev1',
+                defaultValue: '',
                 description: 'Select a dev tag'
     )
   }
