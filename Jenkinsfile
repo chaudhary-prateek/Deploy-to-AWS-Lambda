@@ -114,14 +114,11 @@ pipeline {
     )
 
     gitParameter(
-      name: 'TAG',
-      type: 'PT_TAG',
-      defaultValue: '',
-      description: 'Select Git tag (e.g., v1.0.0)',
-      tagFilter: '.*',
-      useRepository: 'https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda.git',
-      sortMode: 'DESCENDING',
-      selectedValue: 'NONE',
+                name: 'tag',
+                type: 'PT_TAG',
+                tagFilter: '.*dev.*',
+                defaultValue: 'v1.0.0-dev1',
+                description: 'Select a dev tag'
     )
   }
 
