@@ -102,42 +102,32 @@ pipeline {
   }
 
   parameters {
-    // Manual branch name
-    string(
+    gitParameter(
       name: 'BRANCH',
+      type: 'PT_BRANCH',
       defaultValue: 'main',
-      description: 'Branch name (e.g., main or dev)'
+      description: 'Select the Git branch to use',
+      branchFilter: 'origin/(.*)',             // Only matches origin/ branches
+      useRepository: 'https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda.git',
+      sortMode: 'DESCENDING',
+      selectedValue: 'NONE',
+      quickFilterEnabled: true
     )
 
-    // Dynamic Git Tag list
     gitParameter(
       name: 'TAG',
       type: 'PT_TAG',
       defaultValue: '',
-      description: 'Tag to deploy (e.g., v1.0.1-dev.1)',
+      description: 'Select Git tag (e.g., v1.0.0)',
+      tagFilter: 'v.*',
       useRepository: 'https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda.git',
-      tagFilter: '.*',
-      sortMode: 'DESCENDING'
+      sortMode: 'DESCENDING',
+      selectedValue: 'NONE',
+      quickFilterEnabled: true
     )
   }
 
   stages {
-    stage('Inject AWS Credentials') {
-      steps {
-        withCredentials([[
-          $class: 'UsernamePasswordMultiBinding',
-          credentialsId: 'AWS-ID',
-          usernameVariable: 'CREDS_ACCESS_KEY',
-          passwordVariable: 'CREDS_SECRET_KEY'
-        ]]) {
-          script {
-            env.AWS_ACCESS_KEY_ID = "${env.CREDS_ACCESS_KEY}"
-            env.AWS_SECRET_ACCESS_KEY = "${env.CREDS_SECRET_KEY}"
-          }
-        }
-      }
-    }
-
     stage('Checkout Code') {
       steps {
         script {
@@ -152,12 +142,30 @@ pipeline {
               branches: [[name: "refs/tags/${params.TAG}"]],
               userRemoteConfigs: [[url: repoUrl]]
             ])
-          } else {
+          } else if (params.BRANCH?.trim()) {
             echo "📥 Checking out branch: ${params.BRANCH}"
             checkout([$class: 'GitSCM',
-              branches: [[name: "${params.BRANCH}"]],
+              branches: [[name: "*/${params.BRANCH}"]], // this auto maps to "origin/main" correctly
               userRemoteConfigs: [[url: repoUrl]]
             ])
+          } else {
+            error("❌ No valid branch or tag selected.")
+          }
+        }
+      }
+    }
+
+    stage('Inject AWS Credentials') {
+      steps {
+        withCredentials([[
+          $class: 'UsernamePasswordMultiBinding',
+          credentialsId: 'AWS-ID',
+          usernameVariable: 'CREDS_ACCESS_KEY',
+          passwordVariable: 'CREDS_SECRET_KEY'
+        ]]) {
+          script {
+            env.AWS_ACCESS_KEY_ID = "${env.CREDS_ACCESS_KEY}"
+            env.AWS_SECRET_ACCESS_KEY = "${env.CREDS_SECRET_KEY}"
           }
         }
       }
