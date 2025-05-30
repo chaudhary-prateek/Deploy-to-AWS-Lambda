@@ -112,7 +112,7 @@ pipeline {
     // Dynamic Git Tag list
     gitParameter(
       name: 'TAG',
-      type: 'PT_BRANCH',
+      type: 'PT_TAG',
       defaultValue: '',
       description: 'Tag to deploy (e.g., v1.0.1-dev.1)',
       useRepository: 'https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda.git',
