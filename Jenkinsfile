@@ -111,7 +111,6 @@ pipeline {
       useRepository: 'https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda.git',
       sortMode: 'DESCENDING',
       selectedValue: 'NONE',
-      quickFilterEnabled: true
     )
 
     gitParameter(
@@ -119,11 +118,10 @@ pipeline {
       type: 'PT_TAG',
       defaultValue: '',
       description: 'Select Git tag (e.g., v1.0.0)',
-      tagFilter: 'v.*',
+      tagFilter: '.*',
       useRepository: 'https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda.git',
       sortMode: 'DESCENDING',
       selectedValue: 'NONE',
-      quickFilterEnabled: true
     )
   }
 
