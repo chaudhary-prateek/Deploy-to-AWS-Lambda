@@ -102,9 +102,25 @@ pipeline {
   }
 
   parameters {
-    string(name: 'BRANCH', defaultValue: 'main', description: 'Git branch to use')
-    string(name: 'TAG', defaultValue: 'v1.0.0', description: 'Git tag to deploy')
+    // Manual branch input (string)
+    string(
+      name: 'BRANCH',
+      defaultValue: 'main',
+      description: 'Enter the Git branch to use (e.g., main, dev)'
+    )
+
+    // Git parameter for tags only
+    gitParameter(
+      name: 'TAG',
+      type: 'PT_TAG',
+      defaultValue: '',
+      description: 'Select the Git tag to deploy (e.g., v1.0.0, v1.0.1-dev.1)',
+      useRepository: 'https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda.git',
+      tagFilter: 'v.*',
+      sortMode: 'DESCENDING'
+    )
   }
+
 
   stages {
     stage('Inject AWS Credentials') {
@@ -123,15 +139,26 @@ pipeline {
     }
 
     stage('Checkout Code') {
-      steps {
-        git branch: "${params.BRANCH}", url: 'https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda.git'
-        sh """
-          echo "📥 Fetching tags and checking out tag: ${params.TAG}"
-          git fetch --tags
-          git checkout tags/${params.TAG}
-        """
+  steps {
+    script {
+      echo "🌿 Branch: ${params.BRANCH}"
+      echo "🏷️ Tag: ${params.TAG}"
+
+      if (params.TAG?.trim()) {
+        echo "📥 Checking out tag: ${params.TAG}"
+        checkout([$class: 'GitSCM',
+          branches: [[name: "refs/tags/${params.TAG}"]],
+          userRemoteConfigs: [[url: 'https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda.git']]
+        ])
+      } else {
+        echo "📥 Checking out branch: ${params.BRANCH}"
+        checkout([$class: 'GitSCM',
+          branches: [[name: "*/${params.BRANCH}"]],
+          userRemoteConfigs: [[url: 'https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda.git']]
+        ])
       }
     }
+  }
 
     stage('Authenticate AWS') {
       steps {
