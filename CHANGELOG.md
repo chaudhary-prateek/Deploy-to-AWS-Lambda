@@ -5,6 +5,13 @@
 
 * update index file ([c571855](https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda/commit/c571855c8e29b4b3daa78ef5a255e83c5e540f99))
 
+## [1.0.1](https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda/compare/v1.0.0...v1.0.1) (2025-05-30)
+
+
+### Bug Fixes
+
+* update index file ([c571855](https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda/commit/c571855c8e29b4b3daa78ef5a255e83c5e540f99))
+
 ## [1.0.1](https://github.com/chaudhary-prateek/Deploy-to-AWS-Lambda/compare/v1.0.0...v1.0.1) (2025-05-29)
 
 
