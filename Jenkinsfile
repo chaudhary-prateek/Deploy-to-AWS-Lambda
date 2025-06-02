@@ -180,6 +180,11 @@ pipeline {
           docker images | grep ${ECR_REPO}
           docker rmi -f my-image:latest || true
           docker image prune -f
+          docker images --format '{{.Repository}}:{{.Tag}} {{.ID}}' | \
+          grep '298917544415.dkr.ecr.ap-south-1.amazonaws.com/node' | \
+          grep -vE 'v1.0.0|v1.0.1|v1.1.0|latest' | \
+          awk '{print $2}' | xargs -r docker rmi -f
+
         """
       }
     }
