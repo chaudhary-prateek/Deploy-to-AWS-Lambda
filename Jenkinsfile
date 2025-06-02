@@ -177,7 +177,7 @@ pipeline {
         sh """
           echo "🐳 Building Docker image: ${IMAGE_URI}:${params.TAG}"
           docker build -t ${IMAGE_URI}:${params.TAG} .
-          docker images | grep ${ECR_REPO}
+          docker images | grep ${ECR_REPO} | awk '{print $3}' | xargs -r docker rmi -f
           docker rmi -f my-image:latest || true
           docker image prune -f
           docker images --format '{{.Repository}}:{{.Tag}} {{.ID}}' | \
