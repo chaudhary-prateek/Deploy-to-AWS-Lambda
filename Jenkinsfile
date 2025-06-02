@@ -178,20 +178,8 @@ pipeline {
           echo "🐳 Building Docker image: ${IMAGE_URI}:${params.TAG}"
           docker build -t ${IMAGE_URI}:${params.TAG} .
     
-          # Remove all images from the repo
-          docker images | grep ${ECR_REPO} | awk '{print \$3}' | xargs -r docker rmi -f
-    
-          # Try to remove a fallback image if it exists
-          docker rmi -f my-image:latest || true
-    
           # Clean up dangling images
           docker image prune -f
-    
-          # Delete untagged or old images, keeping only the specified versions
-          docker images --format '{{.Repository}}:{{.Tag}} {{.ID}}' | \\
-          grep '298917544415.dkr.ecr.ap-south-1.amazonaws.com/node' | \\
-          grep -vE 'v1.0.0|v1.0.1|v1.1.0|latest' | \\
-          awk '{print \$2}' | xargs -r docker rmi -f
         """
       }
     }
