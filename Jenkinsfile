@@ -178,6 +178,8 @@ pipeline {
           echo "🐳 Building Docker image: ${IMAGE_URI}:${params.TAG}"
           docker build -t ${IMAGE_URI}:${params.TAG} .
           docker images | grep ${ECR_REPO}
+          docker rmi -f my-image:latest || true
+          docker image prune -f
         """
       }
     }
