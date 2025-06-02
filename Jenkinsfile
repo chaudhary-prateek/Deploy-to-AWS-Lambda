@@ -177,9 +177,10 @@ pipeline {
         sh """
           echo "🐳 Building Docker image: ${IMAGE_URI}:${params.TAG}"
           docker build -t ${IMAGE_URI}:${params.TAG} .
-    
+          docker images
           # Clean up dangling images
-          docker image prune -f
+          docker image prune -f          
+          docker images
         """
       }
     }
